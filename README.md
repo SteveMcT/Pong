@@ -2,4 +2,4 @@
 
 Fast and simple JS / TS game with Vite
 
-visit on [https://pong.stevemct.eu/](pong.stevemct.eu)
+visit on [pong.stevemct.eu](https://pong.stevemct.eu/)
