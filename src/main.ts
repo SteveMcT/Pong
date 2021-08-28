@@ -8,18 +8,50 @@ const ball = document.getElementById("ball")!;
 
 const width = window.innerWidth;
 
+const keyLeftUp = "w", keyLeftDown = "s"
+const keyRightUp = "ArrowUp", keyRightDown = "ArrowDown"
+
+const playerSpeed = 3
+
 panel1.style.top = "200px";
 panel2.style.top = "200px";
 
-document.addEventListener("keydown", (ev) => {
-  const top1 = parseInt(panel1.style.top.slice(0, -2));
-  const top2 = parseInt(panel2.style.top.slice(0, -2));
+enum Direction {
+    NONE, UP, DOWN
+}
 
-  if (ev.key == "s" && top1 <= 600) panel1.style.top = top1 + 20 + "px";
-  else if (ev.key == "w" && top1 > 200) panel1.style.top = top1 - 20 + "px";
-  else if (ev.key == "ArrowUp" && top2 > 200) panel2.style.top = top2 - 20 + "px";
-  else if (ev.key == "ArrowDown" && top2 <= 600) panel2.style.top = top2 + 20 + "px";
+let leftPlayerDirection = Direction.NONE
+let rightPlayerDirection = Direction.NONE
+
+document.addEventListener("keydown", (ev) => {
+
+    if (ev.key == keyLeftUp) {
+        leftPlayerDirection = Direction.UP
+    }
+    if (ev.key == keyLeftDown) {
+        leftPlayerDirection = Direction.DOWN
+    }
+    if (ev.key == keyRightUp) {
+        rightPlayerDirection = Direction.UP
+    }
+    if (ev.key == keyRightDown) {
+        rightPlayerDirection = Direction.DOWN
+    }
+
 });
+
+document.addEventListener("keyup", (ev) => {
+
+    if ((ev.key == keyLeftUp && leftPlayerDirection == Direction.UP)
+        || (ev.key == keyLeftDown && leftPlayerDirection == Direction.DOWN)) {
+        leftPlayerDirection = Direction.NONE
+    }
+    if ((ev.key == keyRightUp && rightPlayerDirection == Direction.UP)
+        || (ev.key == keyRightDown && rightPlayerDirection == Direction.DOWN)) {
+        rightPlayerDirection = Direction.NONE
+    }
+
+})
 
 let s1 = 0;
 let s2 = 0;
@@ -29,33 +61,46 @@ let x = width / 2;
 let y = window.innerHeight / 2;
 
 setInterval(() => {
-  const top1 = parseInt(panel1.style.top.slice(0, -2));
-  const top2 = parseInt(panel2.style.top.slice(0, -2));
+    const top1 = parseInt(panel1.style.top.slice(0, -2));
+    const top2 = parseInt(panel2.style.top.slice(0, -2));
 
-  x += velX;
-  y += velY;
+    x += velX;
+    y += velY;
 
-  ball.style.left = x + velX + "px";
-  ball.style.top = y + velY + "px";
 
-  if (y > 740) velY = -velY;
-  else if (y < 200) velY = -velY;
+    ball.style.left = x + velX + "px";
+    ball.style.top = y + velY + "px";
 
-  if (x < 420 && x > 400 && top1 < y + 20 && top1 + 140 > y) velX = -velX;
-  else if (x > width - 430 && x < width - 400 && top2 < y + 20 && top2 + 140 > y) velX = -velX;
+    if (y > 740) velY = -velY;
+    else if (y < 200) velY = -velY;
 
-  if (x > width) {
-    s1++;
-    score1.innerHTML = s1.toString();
-    reset();
-  } else if (x < 0) {
-    s2++;
-    score2.innerHTML = s2.toString();
-    reset();
-  }
+    if (x < 420 && x > 400 && top1 < y + 20 && top1 + 140 > y) velX = -velX;
+    else if (x > width - 430 && x < width - 400 && top2 < y + 20 && top2 + 140 > y) velX = -velX;
+
+    if (x > width) {
+        s1++;
+        score1.innerHTML = s1.toString();
+        reset();
+    } else if (x < 0) {
+        s2++;
+        score2.innerHTML = s2.toString();
+        reset();
+    }
+
+    if (leftPlayerDirection == Direction.DOWN && top1 <= 600) panel1.style.top = top1 + playerSpeed + "px";
+    else if (leftPlayerDirection == Direction.UP && top1 > 200) panel1.style.top = top1 - playerSpeed + "px";
+
+    if (rightPlayerDirection == Direction.DOWN && top2 <= 600) panel2.style.top = top2 + playerSpeed + "px";
+    else if (rightPlayerDirection == Direction.UP && top2 > 200) panel2.style.top = top2 - playerSpeed + "px";
+
 }, 10);
 
 const reset = () => {
-  x = width / 2;
-  y = window.innerHeight / 2;
+    x = width / 2;
+    y = window.innerHeight / 2;
+
+    // The ball should go into a different direction each start of a round
+    if ((s1 + s2) % 2 == 1) {
+        velX *= -1
+    }
 };
