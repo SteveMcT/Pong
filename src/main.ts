@@ -1,10 +1,17 @@
 import "./styles/style.scss";
 
+/**
+  * Code to get the HTML elements
+  **/
 const panel1 = document.getElementById("panel1")!;
 const panel2 = document.getElementById("panel2")!;
 const score1 = document.getElementById("score1")! as HTMLElement;
 const score2 = document.getElementById("score2")! as HTMLElement;
 const ball = document.getElementById("ball")!;
+
+/**
+  * Constants for the game play settings
+  **/
 
 const keyLeftUp = "w",
   keyLeftDown = "s";
@@ -27,6 +34,11 @@ enum Direction {
 
 let leftPlayerDirection = Direction.NONE;
 let rightPlayerDirection = Direction.NONE;
+
+
+/**
+  * Eventhandler for the keys
+  **/
 
 document.addEventListener("keydown", (ev) => {
   if (ev.key == keyLeftUp) {
@@ -57,6 +69,11 @@ document.addEventListener("keyup", (ev) => {
     rightPlayerDirection = Direction.NONE;
   }
 });
+
+/**
+  * Sets size of the gamefield
+  **/
+
 
 function setSize() {
   width = window.innerWidth;
