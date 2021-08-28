@@ -62,8 +62,6 @@ function setSize() {
   width = window.innerWidth;
   height = window.innerHeight;
 
-  console.log(width);
-
   panel1.style.left = width / 6 + "px";
   panel2.style.right = width / 6 + "px";
   score1.style.left = width / 6 + "px";
